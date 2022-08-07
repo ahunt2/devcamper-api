@@ -7,11 +7,14 @@ const connectDB = require('./config/db')
 connectDB()
 
 // Middleware
+const errorHandler = require('./middleware/error')
 
 // Route files
 const bootcamps = require('./routes/bootcamps')
+const courses = require('./routes/courses')
 
 const app = express()
+app.use(express.json())
 const PORT = process.env.PORT
 
 // Mount middleware
@@ -21,6 +24,8 @@ if(process.env.NODE_ENV === 'development') {
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps)
+app.use('/api/v1/courses', courses)
+app.use(errorHandler)
 
 const server = app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold)

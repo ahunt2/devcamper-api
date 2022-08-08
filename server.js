@@ -1,6 +1,9 @@
 require('dotenv').config()
+const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
+const color = require('colors')
+const fileupload = require('express-fileupload')
 const connectDB = require('./config/db')
 
 // Connect to database
@@ -21,6 +24,12 @@ const PORT = process.env.PORT
 if(process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
+
+// File uploading
+app.use(fileupload())
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps)
